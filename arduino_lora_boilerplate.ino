@@ -4,9 +4,12 @@
  *          Jon Wallace 2020
  */
 
-#define MAX_CMD (8+5+1+3+1+240+1+3+1+2+2)
-char cmd_buff[MAX_CMD]; // Accomodate a maximum length command (Recieve 240 bytes)
-int  cmd_i = 0;
+// Accomodate a maximum length response (Recieve 240 bytes)
+#define MAX_RES_SIZE (8+5+1+3+1+240+1+3+1+2+2)
+// Response buffer, holds characters coming from the LoRa modules
+char res_buff[MAX_RES_SIZE];
+// global index for the response buffer is needed since input is processed one byte per loop()
+int  res_i = 0;
 
 void setup() {
   Serial.begin(115200); 
@@ -18,15 +21,15 @@ void loop() {
   switch (next) {
   case -1: break; // Nothing to read
   case 10: // Line feed
-    cmd_buff[cmd_i++] = next;
-    cmd_buff[cmd_i++] = '\0'; // Add a null termination for easy printing if need be
+    res_buff[res_i++] = next;
+    res_buff[res_i++] = '\0'; // Add a null termination for easy printing if need be
     process_response();
     break;
   case '+':
-    cmd_i = 0;
+    res_i = 0;
     // fall through
   default:
-    cmd_buff[cmd_i++] = next;
+    res_buff[res_i++] = next;
     break;
   }
 }
@@ -56,7 +59,7 @@ void process_response() {
       break;
     case UNKNOWN_RESPONSE:
       Serial.print("UNKNOWN_RESPONSE: ");
-      Serial.print(cmd_buff);
+      Serial.print(res_buff);
       break;
     default:
       break;
@@ -66,12 +69,12 @@ void process_response() {
 int parse_response() {
   int res;
   for (res = 0; res < N_RES; res++) { // for each known response string
-    for (int i = 0; i < cmd_i; i++) { // for each character in the response buffer
+    for (int i = 0; i < res_i; i++) { // for each character in the response buffer
       if (RES_STRINGS[res][i] == '\0') {
         // Got to end of a known response string, must be a match
         goto parse_response_match;
       }
-      if (RES_STRINGS[res][i] != cmd_buff[i]) {
+      if (RES_STRINGS[res][i] != res_buff[i]) {
         //This aint it chief!
         break; // go to next response string
       }
@@ -86,16 +89,16 @@ parse_response_match:
 
 void print_error() {
   int err;
-  char a = cmd_buff[5];
+  char a = res_buff[5];
   if (a >= '0' && a <= '9') err = a - '0';
   else err = -1;
-  a = cmd_buff[6];
+  a = res_buff[6];
   if (a >= '0' && a <= '9') err = 10*err + (a - '0');
   switch(err) {
     default:
     case -1: // Couldn't parse the error number
       Serial.print("Error: ");
-      Serial.print(cmd_buff); // Just throw it back
+      Serial.print(res_buff); // Just throw it back
       break;
     case 1:
       // Printing this one generates itself :)
