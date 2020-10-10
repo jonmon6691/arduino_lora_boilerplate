@@ -18,6 +18,10 @@ void setup() {
 
 void loop() {
   char next = Serial.read();
+  process_character(next);
+}
+
+void process_character(char next) {
   switch (next) {
   case -1: break; // Nothing to read
   case 10: // Line feed
