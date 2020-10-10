@@ -41,7 +41,8 @@ Unfortunately this requires burning the bootloader which requires another
 Arduino to act as a programmer. See this guide for more information: 
 [https://www.arduino.cc/en/Tutorial/BuiltInExamples/ArduinoISP](https://www.arduino.cc/en/Tutorial/BuiltInExamples/ArduinoISP)
 
-Example Programmer:
+Simple programmer for burning the modified bootloader:
+
 ![Example programmer](docs/programmer.jpg)
 
 # Wiring
