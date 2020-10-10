@@ -1,0 +1,13 @@
+diff --git a/optiboot/bootloaders/optiboot/optiboot.c b/optiboot/bootloaders/optiboot/optiboot.c
+index 7b7cd8d..b03a3ff 100644
+--- a/optiboot/bootloaders/optiboot/optiboot.c
++++ b/optiboot/bootloaders/optiboot/optiboot.c
+@@ -740,6 +740,8 @@ int main(void) {
+   LED_DDR |= _BV(LED);
+ #endif
+ 
++  DDRD |= _BV(2); // arduino_lora_boilerplate: Make pin 2 an output to put the lora module in reset during boot
++
+ #if SOFT_UART
+   /* Set TX pin as output */
+   UART_DDR |= _BV(UART_TX_BIT);
