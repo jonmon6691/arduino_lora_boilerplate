@@ -131,16 +131,23 @@ void loop() {
 # Notes about AT+PARAMETER's
 ## Ranges and defaults
 
-| Parameter | Min | Max | Default |
-| --------- | --- | --- | ------- |
-| Spreading factor | 7 | 12 | 12 |
-| Bandwidth | 0 (7.8 kHz) | 9 (500 kHz) | 7 (125 kHz) |
-| Coding Rate | 1 | 4 | 1 |
-| Programmed Preamble | 4 | 25* | 4 |
-| Frequency** | 711.1 MHz | 1.024 GHz | 915.0 MHz|
+| Parameter | Min | Max | Default | Effect on bitrate |
+| --------- | --- | --- | ------- | ----------------- |
+| Spreading factor | 7 | 12 | 12 | O(n/2^n) |
+| Bandwidth | 0 (7.8 kHz) | 9 (500 kHz) | 7 (125 kHz) | O(n) |
+| Coding Rate | 1 | 4 | 1 | O(4/(4+n)) |
+| Programmed Preamble | 4 | 25[^1] | 4 | O(1) |
+| Frequency[^2] | 711.1 MHz | 1.024 GHz | 915.0 MHz| O(1) |
 
-*\*Datasheet specifies max=7 but module will successfully configure up to 25*
-*\*\*Not set through the AT+PARAMETER command*
+[^1]: Datasheet specifies max=7 but module will successfully configure up to 25
+[^2]: Not set through the AT+PARAMETER command
+
+## Symbol Rate and number of symbols
+The time it takes to send a LoRa packet is rediculously variable. Certain configurations can take on the order of seconds to send just a few bytes.
+
+To calculate the time to send a packet, you need to know the nuber of symbols that will be sent, and the symbol rate.
+
+![Send time](https://latex.codecogs.com/svg.latex?send%5C%2520time%253D%5Cfrac%7Bnumber%5C%2520of%5C%2520symbols%7D%7Bsymbol%5C%2520rate%7D)
 
 ## Spreading Factor
 Maximum spreading factor 12:
@@ -150,15 +157,6 @@ Maximum spreading factor 12:
 The minimum spreading factor 7 has the fastest bit-rate:
 
 ![Waterfall diagram of minimum spreading factor](docs/wf_sf_7.png)
-
-| Spreading factor | Bit-rate (max payload) |
-| ---------------- | ---------------------- |
-| 7 | 0 |
-| 8 | 0 |
-| 9 | 0 |
-| 10 | 0 |
-| 11 | 0 |
-| 12 | 0 |
 
 ## Bandwidth
 Minimum bandwidth:
@@ -170,9 +168,10 @@ Maximum bandwidth:
 ![Waterfall diagram of maximum bandwidth 500kHz](docs/wf_bw_max.png)
 
 ## Coding Rate
+Coding rate affects the number of forward error correction bits included in the data payload. Total bytes transmitted is 4/(4+CR) times the number of data bytes, where CR is set from 1 to 4.
 
 ## Programmed preamble
-
+The preamble parameter affects the number of down-chirp symbols added at the beginning of a frame.
 
 ## Additional resources
 * [https://docs.exploratory.engineering/lora/dr_sf/](https://docs.exploratory.engineering/lora/dr_sf/)
