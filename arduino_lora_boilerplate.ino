@@ -24,16 +24,16 @@ void loop() {
 void process_character(char next) {
   switch (next) {
   case -1: break; // Nothing to read
+  
   case 10: // Line feed
     res_buff[res_i++] = next;
     res_buff[res_i++] = '\0'; // Add a null termination for easy printing if need be
     process_response();
     break;
-  case '+':
-    res_i = 0;
+    
+  case '+': res_i = 0;
     // fall through
-  default:
-    res_buff[res_i++] = next;
+  default: res_buff[res_i++] = next;
     break;
   }
 }
@@ -51,22 +51,24 @@ void process_response() {
     case RES_READY:
       Serial.print("AT+SEND=0,6,ONLINE\r\n");
       break;
-    case RES_ERR:
-      print_error();
-      break;
-    case RES_OK:
-      Serial.println("RES_OK");
-      break;
+      
+    case RES_ERR: print_error(); break;
+    case RES_OK: Serial.println("RES_OK"); break;
+    
     case RES_RCV:
+      //Serial.print("Incoming: ");
+      //Serial.print(res_buff);
+      //Serial.print("\r\n");
       Serial.print("AT+SEND=0,4,PONG\r\n");
       digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       break;
+      
     case UNKNOWN_RESPONSE:
       Serial.print("UNKNOWN_RESPONSE: ");
       Serial.print(res_buff);
       break;
-    default:
-      break;
+      
+    default: break;
   }
 }
 
@@ -74,28 +76,19 @@ int parse_response() {
   int res;
   for (res = 0; res < N_RES; res++) { // for each known response string
     for (int i = 0; i < res_i; i++) { // for each character in the response buffer
-      if (RES_STRINGS[res][i] == '\0') {
-        // Got to end of a known response string, must be a match
-        goto parse_response_match;
-      }
-      if (RES_STRINGS[res][i] != res_buff[i]) {
-        //This aint it chief!
-        break; // go to next response string
-      }
+      if (RES_STRINGS[res][i] == '\0') goto parse_response_match;
+      if (RES_STRINGS[res][i] != res_buff[i]) break;
     }
   }
   // Went through all response strings without a match
   return UNKNOWN_RESPONSE;
-  
 parse_response_match:
   return res;
 }
 
 void print_error() {
-  int err;
   char a = res_buff[5];
-  if (a >= '0' && a <= '9') err = a - '0';
-  else err = -1;
+  int err = (a >= '0' && a <= '9') ? a - '0' : -1;
   a = res_buff[6];
   if (a >= '0' && a <= '9') err = 10*err + (a - '0');
   switch(err) {
@@ -104,14 +97,9 @@ void print_error() {
       Serial.print("Error: ");
       Serial.print(res_buff); // Just throw it back
       break;
-    case 1:
-      // Printing this one generates itself :)
-      // Serial.println("There is not \"enter\" or 0x0D 0x0A in the end of the AT Command.");
-      break;
-    case 2:
-      // Good idea to suppress this one since everything you print generates it
-      // Serial.println("The head of AT command is not \"AT\" string.");
-      break;
+    // Errors 1&2 must be supressed since they are sent back any time Serial.println is used
+    case 1: break; // Serial.println("There is not \"enter\" or 0x0D 0x0A in the end of the AT Command.");
+    case 2: break; // Serial.println("The head of AT command is not \"AT\" string.");
     case 3: Serial.println("Error: There is not \"=\" symbol in the AT command."); break;
     case 4: Serial.println("Error: Unknow command."); break;
     case 10: Serial.println("Error: TX is over times."); break;
