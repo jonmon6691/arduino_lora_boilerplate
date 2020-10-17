@@ -128,6 +128,35 @@ void loop() {
 }
 ...
 ```
+# Notes about AT+PARAMETER's
+## Spreading Factor
+The RYLR896 defaults to the max spreading factor of 12:
+
+![Waterfall diagram of default spreading factor](docs/wf_default.png)
+
+The minimum spreading factor 7 has the fastest bit-rate:
+
+![Waterfall diagram of minimum spreading factor](docs/wf_sf_7.png)
+
+| Spreading factor | Bit-rate (max payload) |
+| ---------------- | ---------------------- |
+| 7 | 0 |
+| 8 | 0 |
+| 9 | 0 |
+| 10 | 0 |
+| 11 | 0 |
+| 12 | 0 |
+
+## Bandwidth
+![Waterfall diagram of minimum bandwidth 7.8kHz](docs/wf_bw_min.png)
+![Waterfall diagram of maximum bandwidth 500kHz](docs/wf_bw_max.png)
+
+## Coding Rate
+
+## Programmed preamble
 
 
-
+## Additional resources
+* [https://docs.exploratory.engineering/lora/dr_sf/](https://docs.exploratory.engineering/lora/dr_sf/)
+* [https://www.thethingsnetwork.org/article/how-spreading-factor-affects-lorawan-device-battery-life](https://www.thethingsnetwork.org/article/how-spreading-factor-affects-lorawan-device-battery-life)
+* [https://www.youtube.com/playlist?list=PLmL13yqb6OxdeOi97EvI8QeO8o-PqeQ0g](https://www.youtube.com/playlist?list=PLmL13yqb6OxdeOi97EvI8QeO8o-PqeQ0g)
