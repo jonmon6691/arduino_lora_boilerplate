@@ -129,8 +129,21 @@ void loop() {
 ...
 ```
 # Notes about AT+PARAMETER's
+## Ranges and defaults
+
+| Parameter | Min | Max | Default |
+| --------- | --- | --- | ------- |
+| Spreading factor | 7 | 12 | 12 |
+| Bandwidth | 0 (7.8 kHz) | 9 (500 kHz) | 7 (125 kHz) |
+| Coding Rate | 1 | 4 | 1 |
+| Programmed Preamble | 4 | 25* | 4 |
+| Frequency** | 711.1 MHz | 1.024 GHz | 915.0 MHz|
+
+*\*Datasheet specifies max=7 but module will successfully configure up to 25*
+*\*\*Not set through the AT+PARAMETER command*
+
 ## Spreading Factor
-The RYLR896 defaults to the max spreading factor of 12:
+Maximum spreading factor 12:
 
 ![Waterfall diagram of default spreading factor](docs/wf_default.png)
 
@@ -148,7 +161,12 @@ The minimum spreading factor 7 has the fastest bit-rate:
 | 12 | 0 |
 
 ## Bandwidth
+Minimum bandwidth:
+
 ![Waterfall diagram of minimum bandwidth 7.8kHz](docs/wf_bw_min.png)
+
+Maximum bandwidth:
+
 ![Waterfall diagram of maximum bandwidth 500kHz](docs/wf_bw_max.png)
 
 ## Coding Rate
