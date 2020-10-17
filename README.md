@@ -136,18 +136,22 @@ void loop() {
 | Spreading factor | 7 | 12 | 12 | O(n/2^n) |
 | Bandwidth | 0 (7.8 kHz) | 9 (500 kHz) | 7 (125 kHz) | O(n) |
 | Coding Rate | 1 | 4 | 1 | O(4/(4+n)) |
-| Programmed Preamble | 4 | 25[^1] | 4 | O(1) |
-| Frequency[^2] | 711.1 MHz | 1.024 GHz | 915.0 MHz| O(1) |
+| Programmed Preamble | 4 | 25\* | 4 | O(1) |
+| Frequency\*\* | 711.1 MHz | 1.024 GHz | 915.0 MHz| O(1) |
 
-[^1]: Datasheet specifies max=7 but module will successfully configure up to 25
-[^2]: Not set through the AT+PARAMETER command
+*\*Datasheet specifies max=7 but module will successfully configure up to 25*  
+*\*\*Not set through the AT+PARAMETER command*
 
 ## Symbol Rate and number of symbols
 The time it takes to send a LoRa packet is rediculously variable. Certain configurations can take on the order of seconds to send just a few bytes.
 
 To calculate the time to send a packet, you need to know the nuber of symbols that will be sent, and the symbol rate.
 
-![Send time](https://latex.codecogs.com/svg.latex?send%5C%2520time%253D%5Cfrac%7Bnumber%5C%2520of%5C%2520symbols%7D%7Bsymbol%5C%2520rate%7D)
+![Send time](https://latex.codecogs.com/svg.latex?send%5C%20time%3D%5Cfrac%7Bnumber%5C%20of%5C%20symbols%7D%7Bsymbol%5C%20rate%7D)
+
+![number of symbols](https://latex.codecogs.com/svg.latex?number%5C%20of%5C%20symbols%3D%28PP%20%2B%202.5%29%2B%281%2B%5Cfrac%7B4%7D%7B4%20%2B%20CR%7D%29%2A%5Cfrac%7Bnumber%5C%20of%5C%20data%5C%20bits%7D%7BSF%7D)
+
+![symbol rate](https://latex.codecogs.com/svg.latex?symbol%5C%20rate%3D%5Cfrac%7BBW%7D%7B2%5ES%5EF%7D)
 
 ## Spreading Factor
 Maximum spreading factor 12:
