@@ -29,25 +29,25 @@ all arduino boards that optiboot supports.
 $ ./build_bootloader.sh
 ```
 
-The bootloaders are copied into the ./bootloaders/ folder. Pick the right one
-for your board and copy it into your arduino environment. 
+The bootloaders are copied into the ./bootloaders/ folder. Modify the script
+`burn_bootloader.sh` to match your programmer and target setting.
 
 ```bash
 # Replace the destination path with one appropriate for your machine.
-$ cp bootloaders/optiboot_atmega328.hex ~/.arduino15/packages/arduino/hardware/avr/1.8.3/bootloaders/optiboot
+$ ./burn_bootlaoder.sh
 ```
 
-Unfortunately this requires burning the bootloader which requires another
+**Note:** Burning the bootloader requires another
 Arduino to act as a programmer. See this guide for more information: 
 [https://www.arduino.cc/en/Tutorial/BuiltInExamples/ArduinoISP](https://www.arduino.cc/en/Tutorial/BuiltInExamples/ArduinoISP)
 
-Simple programmer for burning the modified bootloader:
-
+*Example programmer for burning the modified bootloader:*  
 ![Example programmer](docs/programmer.jpg)
 
 # Wiring
-Note this was designed for an Arduino Nano but should be compatible with other boards.
-
+Notes:
+* This was designed for an Arduino Nano but should be compatible with other boards.
+* The N/C pin and RESET on the Aduino board may be soldered together for convenience  
 ![schematic](docs/schematic.png)
 
 # Building on this boilerplate
