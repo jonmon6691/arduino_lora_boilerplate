@@ -33,7 +33,7 @@ The bootloaders are copied into the ./bootloaders/ folder. Modify the script
 `burn_bootloader.sh` to match your programmer and target setting.
 
 ```bash
-# Replace the destination path with one appropriate for your machine.
+# Modify the script first to change settings for your setup
 $ ./burn_bootlaoder.sh
 ```
 
