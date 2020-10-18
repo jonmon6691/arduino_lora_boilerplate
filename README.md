@@ -160,7 +160,7 @@ Maximum spreading factor 12:
 
 The minimum spreading factor 7 has the fastest bit-rate:
 
-![Waterfall diagram of minimum spreading factor](docs/wf_sf_7.png)
+![Waterfall diagram of minimum spreading factor](docs/wf_sf_7.jpg)
 
 ## Bandwidth
 Minimum bandwidth:
