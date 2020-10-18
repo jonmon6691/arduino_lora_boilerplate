@@ -32,16 +32,15 @@ sf, bw, cr, pp = 12, 7, 1, 4
 # pp Programmed preamble 4-7
 s.cmd(f"AT+PARAMETER={sf},{bw},{cr},{pp}")
 
-s.cmd('AT+SEND=0,4,PING', timeit=True)
-
 while True:
 	# uncomment one of the lines below to perform a parameter sweep
-	if True:
+	#if True:
 	#for f in range(711100000, 1024000000, 1000):
 	#for sf in range(7, 13, 1):
-	#for bw in range(0, 19, 1):
+	for bw in range(0, 9, 1):
 	#for cr in range(1, 5, 1):
 	#for pp in range(3, 25, 1):
+		s.cmd(f"AT+PARAMETER={sf},{bw},{cr},{pp}")
 		s.cmd('AT+SEND=0,4,PING+Afterplus', timeit=True)
 		print(s.readline()) # Check for receive
 
