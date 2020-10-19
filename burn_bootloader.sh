@@ -20,7 +20,7 @@ avrdude_conf_path=/snap/arduino/41/hardware/tools/avr/etc/avrdude.conf
 # Uncomment if you have avrdude installed
 #avrdude_bin_path=avrdude
 
-avrdude_flags= -C$(avrdude_conf_path) -v -p$(target_board) -c$(programmer_type) -P$(programmer_port) -b$(programmer_buad) 
+avrdude_flags=-C$(avrdude_conf_path) -v -p$(target_board) -c$(programmer_type) -P$(programmer_port) -b$(programmer_buad) 
 
 # I have NO IDEA if these fuse bit settings are valid for anything other than atmega328!
 # Best way to find out yours is to turn on verbose outputs in the arduino IDE and try to flash a bootloader that way and see what it calls
