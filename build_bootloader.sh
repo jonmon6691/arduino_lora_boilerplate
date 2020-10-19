@@ -7,6 +7,6 @@ cd optiboot/bootloaders/optiboot && ./makeall.arduino.sh
 cp *.hex ../../../../bootloaders
 echo
 echo
-echo [Done] Copy the right .hex file from bootloaders/ into your arduino environment and burn the bootloader
+echo "[Done] Check the variables in burn_bootloader.sh then run it to burn the bootloader"
 echo
 
